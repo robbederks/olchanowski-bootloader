@@ -43,10 +43,9 @@
 
 #include "lpc17xx_wdt.h"
 
-#define PLAY_BTN    P2_12
 #define ISP_BTN	    P2_10
 
-#define DFU_BTN     PLAY_BTN
+#define DFU_BTN     ISP_BTN
 
 #ifndef DEBUG_MESSAGES
 #define printf(...) do {} while (0)
@@ -64,7 +63,6 @@ void setleds(int leds)
 	GPIO_write(LED2, leds &  2);
 	GPIO_write(LED3, leds &  4);
 	GPIO_write(LED4, leds &  8);
-	GPIO_write(LED5, leds & 16);
 }
 
 int dfu_btn_pressed(void)
@@ -187,17 +185,18 @@ int main(void)
 
 	GPIO_init(DFU_BTN); GPIO_input(DFU_BTN);
 
-	GPIO_init(LED1); GPIO_output(LED1);
-	GPIO_init(LED2); GPIO_output(LED2);
-	GPIO_init(LED3); GPIO_output(LED3);
-	GPIO_init(LED4); GPIO_output(LED4);
-	GPIO_init(LED5); GPIO_output(LED5);
+	GPIO_init(LED1); GPIO_output(LED1); GPIO_write(LED1, 1);
+	GPIO_init(LED2); GPIO_output(LED2); GPIO_write(LED2, 1);
+	GPIO_init(LED3); GPIO_output(LED3); GPIO_write(LED3, 1);
+	GPIO_init(LED4); GPIO_output(LED4); GPIO_write(LED4, 1);
 
-	// turn off heater outputs
-	GPIO_init(P2_4); GPIO_output(P2_4); GPIO_write(P2_4, 0);
-	GPIO_init(P2_5); GPIO_output(P2_5); GPIO_write(P2_5, 0);
-	GPIO_init(P2_6); GPIO_output(P2_6); GPIO_write(P2_6, 0);
-	GPIO_init(P2_7); GPIO_output(P2_7); GPIO_write(P2_7, 0);
+	// turn off heater outputs and motor controllers
+	GPIO_init(P2_7); GPIO_output(P2_7); GPIO_write(P2_7, 0);	// extruder heater
+	GPIO_init(P2_5); GPIO_output(P2_5); GPIO_write(P2_5, 0);	// heated bed
+	GPIO_init(P1_23); GPIO_output(P2_6); GPIO_write(P2_6, 1);	// x axis
+	GPIO_init(P0_4); GPIO_output(P0_4); GPIO_write(P0_4, 1);	// y axis
+	GPIO_init(P0_19); GPIO_output(P0_19); GPIO_write(P0_19, 1);	// z axis
+	GPIO_init(P0_21); GPIO_output(P0_21); GPIO_write(P0_21, 1);	// e axis
 
 	setleds(31);
 
