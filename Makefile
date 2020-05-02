@@ -6,7 +6,7 @@ APPBAUD  = 1000000
 
 PROJECT  = DFU-Bootloader
 
-CONSOLE  = /dev/arduino
+CONSOLE  = /dev/ttyUSB0
 
 CSRC     = $(wildcard *.c)
 CXXSRC   = $(wildcard *.cpp)
