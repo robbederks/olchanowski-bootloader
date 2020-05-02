@@ -44,8 +44,9 @@
 #include "lpc17xx_wdt.h"
 
 #define ISP_BTN	    P2_10
+#define MAIN_BTN    P4_29
 
-#define DFU_BTN     ISP_BTN
+#define DFU_BTN     MAIN_BTN
 
 #ifndef DEBUG_MESSAGES
 #define printf(...) do {} while (0)
@@ -83,11 +84,11 @@ void start_dfu(void)
 void check_sd_firmware(void)
 {
 	int r;
-// 	printf("Check SD\n");
+ 	printf("Check SD\n");
 	f_mount(0, &fat);
 	if ((r = f_open(&file, firmware_file, FA_READ)) == FR_OK)
 	{
-// 		printf("Flashing firmware...\n");
+ 		printf("Flashing firmware...\n");
 		uint8_t buf[512];
 		unsigned int r = sizeof(buf);
 		uint32_t address = USER_FLASH_START;
@@ -101,7 +102,7 @@ void check_sd_firmware(void)
 
 			setleds((address - USER_FLASH_START) >> 15);
 
-// 			printf("\t0x%lx\n", address);
+ 			printf("\t0x%lx\n", address);
 
 			write_flash((void *) address, (char *)buf, sizeof(buf));
 			address += r;
@@ -109,14 +110,14 @@ void check_sd_firmware(void)
 		f_close(&file);
 		if (address > USER_FLASH_START)
 		{
-// 			printf("Complete!\n");
+ 			printf("Complete!\n");
 			r = f_unlink(firmware_old);
 			r = f_rename(firmware_file, firmware_old);
 		}
 	}
 	else
 	{
-// 		printf("open: %d\n", r);
+ 		printf("open: %d\n", r);
 	}
 }
 
@@ -286,22 +287,22 @@ int _write(int fd, const char *buf, int buflen)
 }
 
 void NMI_Handler() {
-// 	printf("NMI\n");
+ 	printf("NMI\n");
 	for (;;);
 }
 void HardFault_Handler() {
-// 	printf("HardFault\n");
+ 	printf("HardFault\n");
 	for (;;);
 }
 void MemManage_Handler() {
-// 	printf("MemManage\n");
+ 	printf("MemManage\n");
 	for (;;);
 }
 void BusFault_Handler() {
-// 	printf("BusFault\n");
+ 	printf("BusFault\n");
 	for (;;);
 }
 void UsageFault_Handler() {
-// 	printf("UsageFault\n");
+ 	printf("UsageFault\n");
 	for (;;);
 }
